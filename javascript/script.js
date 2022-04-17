@@ -2,8 +2,9 @@
 let dealerSum = 0;
 let yourSum = 0;
 
-let dealerAceCount = 0;
-let yourAceCount = 0;
+const aceCard = ''
+// let dealerAceCount = 0;
+// let yourAceCount = 0;
 
 const canHit = true;
 
@@ -47,7 +48,7 @@ function startGame() {
           
           console.log(dealerSum);
           console.log(yourSum);
-          
+
         })
         
         .catch(err => {
@@ -56,37 +57,123 @@ function startGame() {
         function cardValue(val){
           if (val === "ACE") {
             return 11
-          } else if(val === "KING" || val === "QUEEN" || val === "JACK") {
+          } else if (val === "KING" || val === "QUEEN" || val === "JACK") {
             return 10
           } else {
             return parseInt(val)
           }
         }
-    
-
-}
-
-document.querySelector('#hit').addEventListener('click', hitCard)
-
-function hitCard() {
-    let draw = `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`
-    const newCard = document.createElement('img')
-    fetch(draw)
-      .then(res => res.json()) // parse response as JSON
-      .then(data => {
-        console.log(data)
-        let newCard = document.createElement('img')
-
-        newCard.src = data.cards[0].image
-
-        document.querySelector('#yourCards').append(newCard)
         
-      })
-      .catch(err => {
-          console.log(`error ${err}`)
-      });
+        document.querySelector('#hit').addEventListener('click', hitCard) 
+
+        function hitCard() {
+            let draw = `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`
+            const newCard = document.createElement('img')
+            fetch(draw)
+              .then(res => res.json()) // parse response as JSON
+              .then(data => {
+                console.log(data)
+                let newCard = document.createElement('img')
+        
+                newCard.src = data.cards[0].image
+                newCard.value = data.cards[0].value
+
+                document.querySelector('#yourCards').append(newCard)
+
+                yourSum = Number(cardValue(yourSum)) + Number(cardValue(newCard.value))
+
+                console.log(yourSum)
+                
+              })
+              .catch(err => {
+                  console.log(`error ${err}`)
+              });
+        
+        }
+        document.querySelector('#stay').addEventListener('click', stay)
+
+        function stay() {
+            let draw = `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`
+            const newCard = document.createElement('img')
+            fetch(draw)
+              .then(res => res.json()) // parse response as JSON
+              .then(data => {
+                console.log(data)
+                let newCard = document.createElement('img')
+        
+                newCard.src = data.cards[0].image
+                newCard.value = data.cards[0].value
+
+                document.querySelector('#dealerCards').append(newCard)
+
+                dealerSum = Number(cardValue(dealerSum)) + Number(cardValue(newCard.value))
+
+                console.log(dealerSum)
+
+              })
+              .catch(err => {
+                  console.log(`error ${err}`)
+              });
+        }
 
 }
+
+
+
+
+// function cardValue(val) {
+//   if (val === "ACE") {
+//     return 11
+//   } else if ((val === "ACE") && (dealerSum > 21) || (yourSum > 21) ) {
+//     return 1
+//   } else if (val === "KING" || val === "QUEEN" || val === "JACK") {
+//     return 10
+//   } else {
+//     return parseInt(val)
+//   }
+// }
+
+
+
+
+
+
+
+// function cardValue(val){
+//   if (val === "ACE") {
+//     return 11
+//   } else if(val === "KING" || val === "QUEEN" || val === "JACK") {
+//     return 10
+//   } else {
+//     return parseInt(val)
+//   }
+// }
+
+
+
+
+
+// document.querySelector('#hit').addEventListener('click', hitCard)
+
+// function hitCard() {
+//     let draw = `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`
+//     const newCard = document.createElement('img')
+//     fetch(draw)
+//       .then(res => res.json()) // parse response as JSON
+//       .then(data => {
+//         console.log(data)
+//         let newCard = document.createElement('img')
+
+//         newCard.src = data.cards[0].image
+
+//         document.querySelector('#yourCards').append(newCard)
+        
+//       })
+//       .catch(err => {
+//           console.log(`error ${err}`)
+//       });
+
+// }
 
 
 
